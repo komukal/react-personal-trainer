@@ -3,6 +3,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Customerlist from './components/Customerlist';
+import Trainingslist from './components/Trainingslist';
+import Divider from '@material-ui/core/Divider';
+
 function App() {
   return (
     <div className="App">
@@ -17,6 +20,11 @@ function App() {
 
 
         <Customerlist />
+        <Divider variant="middle"  />
+
+
+        <Trainingslist />
+
     </div>
   );
 }

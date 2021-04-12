@@ -5,10 +5,10 @@ import {AgGridReact } from 'ag-grid-react';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
 import { Input, Typography } from "@material-ui/core";
+import moment from "moment";
 
-function Customerlist(){
+function Trainingslist(){
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [gridApi,setGridApi]=useState(null);
     const [columnApi,setColumnApi]=useState(null);
@@ -19,24 +19,43 @@ function Customerlist(){
     const handleClose = () => {
       setAnchorEl(null);
     };
-    const [customers,setCustomers]=useState([]);
+    const [trainings,setTrainings]=useState([]);
     
-    const fetchCustomers= () => {
-        fetch('http://customerrest.herokuapp.com/api/customers')
+    const fetchTrainings= () => {
+        fetch('https://customerrest.herokuapp.com/gettrainings')
         .then(response => response.json())
-        .then(data => setCustomers(data.content))
+        .then(data => setTrainings(data))
         .catch(err => console.log(err))
 
     }
 
     useEffect(()=>{
-        fetchCustomers();
+        fetchTrainings();
         
     },[]);
+    const actionButton=(params)=>{
+        console.log(params);
+    }
     const gridColumns=[
-        {field: 'firstname',sortable:true, filter:true},
-        {field: 'lastname',sortable:true, filter:true},
-        {field: 'email',sortable:true, filter:true},
+
+        {field: 'activity',sortable:true, filter:true},
+        {
+          headerName:'idk',
+          field: 'date',
+          cellRendererFramework: params =>
+         
+              moment(params.value).format('DD.MM.YYYY HH:mm')
+            
+          
+        }, 
+        {field: 'duration',headerName:'Duration (min)',sortable:true, filter:true},
+        {
+          headerName: 'Customer', field: 'customer',
+
+          cellRendererFramework: params =>
+           <div>{params.value.firstname} {params.value.lastname}</div>
+        },
+
         { 
             headerName: '',
             
@@ -62,11 +81,11 @@ function Customerlist(){
       <div border={1}>
         
         <div border={1}  className="ag-theme-material"  style={{height:600, width:'60%',margin:'auto'}}>
-          <Typography variant="h5">Customers</Typography>
-          <Input  onChange={filterText} placeholder="Search customers"></Input>
+          <Typography variant="h5">Trainings</Typography>
+          <Input  onChange={filterText} placeholder="Search trainings"></Input>
             <AgGridReact
             onGridReady={onGridReady}
-            rowData={customers}
+            rowData={trainings}
             columnDefs={gridColumns}
             pagination={true}
             paginationAutoPageSize={true}
@@ -88,4 +107,4 @@ function Customerlist(){
     )
 }
 
-export default Customerlist;
+export default Trainingslist;
