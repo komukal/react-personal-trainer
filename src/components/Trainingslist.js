@@ -43,18 +43,22 @@ function Trainingslist() {
   const gridColumns = [
     { field: "activity", sortable: true, filter: true },
     {
+      width: '100%',
+
       headerName: "Date",
       field: "date",
       cellRendererFramework: (params) =>
         moment(params.value).format("DD.MM.YYYY HH:mm"),
     },
     {
+      width: '120%',
       field: "duration",
       headerName: "Duration (min)",
       sortable: true,
       filter: true,
     },
     {
+      width: '110%',
       headerName: "Customer",
       field: "customer",
 
