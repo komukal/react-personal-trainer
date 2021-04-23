@@ -22,10 +22,10 @@ function AddTraining(props) {
     setOpen(true);
   };
 
-  const handleSave=()=>{
-      props.addCustomerTraining(training);
-      handleClose();
-  }
+  const handleSave = () => {
+    props.addCustomerTraining(training);
+    handleClose();
+  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -45,20 +45,10 @@ function AddTraining(props) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Add training</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          Add training to {props.customerData.firstname}
+        </DialogTitle>
         <DialogContent>
-          <TextField
-            id="datetime-local"
-            label="Next appointment"
-            name="date"
-            margin="dense"
-            type="datetime-local"
-            onChange={inputChanged}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-
           <TextField
             margin="dense"
             label="Activity"
@@ -72,6 +62,27 @@ function AddTraining(props) {
             value={training.duration}
             name="duration"
             onChange={inputChanged}
+          />
+          <TextField
+            id="datetime-local"
+            label="Next appointment"
+            name="date"
+            margin="dense"
+            type="datetime-local"
+            onChange={inputChanged}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+
+          <TextField
+            disabled
+            id="standard-disabled"
+            label="Customer"
+            variant="outlined"
+            defaultValue={
+              props.customerData.firstname + " " + props.customerData.lastname
+            }
           />
         </DialogContent>
         <DialogActions>

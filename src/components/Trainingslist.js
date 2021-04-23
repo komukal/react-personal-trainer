@@ -3,15 +3,12 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
 import { AgGridReact } from "ag-grid-react";
 import moment from "moment";
-
-
 import DeleteIcon from "@material-ui/icons/Delete";
 import { IconButton, Input, Typography } from "@material-ui/core";
 
 function Trainingslist() {
   const [gridApi, setGridApi] = useState(null);
   //const [columnApi, setColumnApi] = useState(null);
-
 
   const [trainings, setTrainings] = useState([]);
 
@@ -23,7 +20,7 @@ function Trainingslist() {
   };
   const deleteTraining = (id) => {
     if (window.confirm("Do you want to delete the training")) {
-      const url = 'https://customerrest.herokuapp.com/api/trainings/'+id
+      const url = "https://customerrest.herokuapp.com/api/trainings/" + id;
       fetch(url, { method: "DELETE" })
         .then((response) => {
           if (response.ok) fetchTrainings();
@@ -35,7 +32,7 @@ function Trainingslist() {
   useEffect(() => {
     fetchTrainings();
   }, []);
- /*
+  /*
   const troubleShooter = (params) => {
     console.log(params);
   };
@@ -43,7 +40,6 @@ function Trainingslist() {
   const gridColumns = [
     { field: "activity", sortable: true, filter: true },
     {
-      width: '100%',
 
       headerName: "Date",
       field: "date",
@@ -51,14 +47,14 @@ function Trainingslist() {
         moment(params.value).format("DD.MM.YYYY HH:mm"),
     },
     {
-      width: '120%',
+      width: "120%",
       field: "duration",
       headerName: "Duration (min)",
       sortable: true,
       filter: true,
     },
     {
-      width: '110%',
+      width: "110%",
       headerName: "Customer",
       field: "customer",
 
@@ -75,13 +71,13 @@ function Trainingslist() {
       field: "_links.self.href",
       cellRendererFramework: (params) => (
         <IconButton
-        onClick={() => deleteTraining(params.data.id)}
-        aria-label="delete"
-        color="secondary"
-        size="small"
-      >
-        <DeleteIcon />
-      </IconButton>
+          onClick={() => deleteTraining(params.data.id)}
+          aria-label="delete"
+          color="secondary"
+          size="small"
+        >
+          <DeleteIcon />
+        </IconButton>
       ),
     },
   ];
@@ -91,7 +87,6 @@ function Trainingslist() {
   }
 
   const filterText = (e) => {
-    console.log(e.target.value);
     gridApi.setQuickFilter(e.target.value);
   };
   return (
@@ -111,8 +106,6 @@ function Trainingslist() {
           paginationAutoPageSize={true}
           suppressCellSelection={true}
         />
-        
-
       </div>
     </div>
   );

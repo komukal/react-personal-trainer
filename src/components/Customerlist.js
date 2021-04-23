@@ -6,9 +6,25 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { IconButton, Input, Typography } from "@material-ui/core";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-material.css";
+import Snackbar from "@material-ui/core/Snackbar";
+
 import AddCustomer from "./AddCustomer";
 import AddTraining from "./AddTraining";
+
 function Customerlist() {
+  /*Snackbar defs*/
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const openSnackbar = () => {
+    setOpen(true);
+  };
+  const closeSnackbar = () => {
+    setOpen(false);
+  };
+  const showMessage = (message) => {
+    setMessage(message);
+    openSnackbar();
+  };
   const [gridApi, setGridApi] = useState(null);
   //const [columnApi, setColumnApi] = useState(null);
 
@@ -30,8 +46,9 @@ function Customerlist() {
       .then((response) => {
         if (response.ok) {
           fetchCustomers();
+          showMessage("Customer added successfully!");
         } else {
-          alert("something went wrong");
+          showMessage("Something went wrong");
         }
       })
       .catch((err) => console.error(err));
@@ -46,22 +63,27 @@ function Customerlist() {
       .then((response) => {
         if (response.ok) {
           fetchCustomers();
+          showMessage("Training added to customer successfully!");
         } else {
-          alert("something went wrong");
+          showMessage("Something went wrong");
         }
       })
       .catch((err) => console.error(err));
   };
 
- const editCustomer = (url, customerData) => {
+  const editCustomer = (url, customerData) => {
     fetch(url, {
       method: "PUT",
       body: JSON.stringify(customerData),
       headers: { "Content-type": "application/json" },
     })
       .then((response) => {
-        if (response.ok) fetchCustomers();
-        else alert("Something went wrong");
+        if (response.ok) {
+          fetchCustomers();
+          showMessage("Customer edited successfully!");
+        } else {
+          showMessage("Something went wrong");
+        }
       })
       .catch((err) => console.error(err));
   };
@@ -70,8 +92,12 @@ function Customerlist() {
     if (window.confirm("Do you want to delete this customer")) {
       fetch(url, { method: "DELETE" })
         .then((response) => {
-          if (response.ok) fetchCustomers();
-          else alert("Something went wrong");
+          if (response.ok) {
+            fetchCustomers();
+            showMessage("Customer deleted");
+          } else {
+            showMessage("Something went wrong");
+          }
         })
         .catch((err) => console.error(err));
     }
@@ -90,17 +116,19 @@ function Customerlist() {
         <div>
           <AddTraining
             addCustomerTraining={addCustomerTraining}
-            customerLink = {params.value[0].href}
+            customerLink={params.value[0].href}
+            customerData={params.data}
           />
         </div>
       ),
     },
-    { field: "firstname", sortable: true,  },
-    { field: "lastname", sortable: true,  },
-    { field: "email", sortable: true,  width:100},
+
+    { field: "firstname", sortable: true },
+    { field: "lastname", sortable: true },
+    { field: "email", sortable: true, width: 100 },
     {
       headerName: "Edit",
-      width: 100,
+      width: 80,
       field: "links",
       cellRendererFramework: (params) => (
         <div>
@@ -114,7 +142,7 @@ function Customerlist() {
     },
     {
       headerName: "Delete",
-      width: 100,
+      width: 80,
       field: "links",
       cellRendererFramework: (params) => (
         <div>
@@ -129,8 +157,10 @@ function Customerlist() {
         </div>
       ),
     },
-    { field: "streetaddress", sortable: true  },
-    { field: "postcode", sortable: true, width:100 },
+    { field: "streetaddress", sortable: true },
+    { field: "city", sortable: true },
+
+    { field: "postcode", sortable: true, width: 100 },
     { field: "phone", sortable: true },
   ];
   function onGridReady(params) {
@@ -144,6 +174,13 @@ function Customerlist() {
   };
   return (
     <div border={1}>
+      <Snackbar
+        open={open}
+        autoHideDuration={4000}
+        message={message}
+        onClose={closeSnackbar}
+      />
+
       <div
         border={1}
         className="ag-theme-material"
