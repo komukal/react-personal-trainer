@@ -55,7 +55,7 @@ function EditCustomer(props) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Edit Car</DialogTitle>
+        <DialogTitle id="form-dialog-title">Edit customer</DialogTitle>
         <DialogContent>
             
         <TextField
